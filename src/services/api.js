@@ -1,50 +1,28 @@
-import axios from "axios";
+// src/services/api.js
+import { db } from "./firebase";
+import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 
-const API_URL = "http://localhost:8080/api/courses";
+const coursesCollection = collection(db, "courses");
+
+// Add a course
+export const addCourse = async (course) => {
+  await addDoc(coursesCollection, course);
+};
 
 // Get all courses
 export const getCourses = async () => {
-  try {
-    const response = await axios.get(API_URL);
-    return response;
-  } catch (error) {
-    console.error("❌ Error fetching courses:", error.response?.data || error.message);
-    throw error;
-  }
-};
-
-// Add new course
-export const addCourse = async (course) => {
-  try {
-    const response = await axios.post(API_URL, course);
-    console.log("✅ Course added:", response.data);
-    return response;
-  } catch (error) {
-    console.error("❌ Error adding course:", error.response?.data || error.message);
-    throw error;
-  }
+  const snapshot = await getDocs(coursesCollection);
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };
 
 // Update course
-export const updateCourse = async (id, course) => {
-  try {
-    const response = await axios.put(`${API_URL}/${id}`, course);
-    console.log("✏️ Course updated:", response.data);
-    return response;
-  } catch (error) {
-    console.error("❌ Error updating course:", error.response?.data || error.message);
-    throw error;
-  }
+export const updateCourse = async (id, updatedCourse) => {
+  const courseDoc = doc(db, "courses", id);
+  await updateDoc(courseDoc, updatedCourse);
 };
 
 // Delete course
 export const deleteCourse = async (id) => {
-  try {
-    const response = await axios.delete(`${API_URL}/${id}`);
-    console.log("🗑️ Course deleted:", id);
-    return response;
-  } catch (error) {
-    console.error("❌ Error deleting course:", error.response?.data || error.message);
-    throw error;
-  }
+  const courseDoc = doc(db, "courses", id);
+  await deleteDoc(courseDoc);
 };
