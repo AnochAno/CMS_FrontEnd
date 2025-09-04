@@ -1,0 +1,39 @@
+.course-card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.course-card-img {
+  height: 150px;
+  object-fit: cover;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Dropdown Menu Styling */
+.custom-dropdown-menu {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 140px;
+  padding: 0.25rem 0;
+  border: 1px solid #e0e0e0;
+}
+
+.custom-dropdown-item {
+  font-weight: 500;
+  color: #343a40;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.custom-dropdown-item:hover {
+  background-color: #0d6efd;
+  color: #ffffff;
+}
