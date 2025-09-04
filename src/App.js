@@ -1,57 +1,55 @@
-// ✅ Top of the file
-import { useState, useEffect } from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
-import CustomNavbar from "./componets/Navbar";
-import Filters from "./componets/Filters";
-import CourseCard from "./componets/CourseCard";
-import CourseForm from "./componets/CourseForm";
-import { getCourses } from "./services/api";
+// src/componets/Login.js
+import { useState } from "react";
+import { Form, Button, Card, Alert } from "react-bootstrap";
 
-export default function App() {
-  const [view, setView] = useState("card");
-  const [courses, setCourses] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [editCourse, setEditCourse] = useState(null);
+export default function Login({ onLogin }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const fetchCourses = async () => {
-    try {
-      const data = await getCourses();
-      setCourses(data || []);
-    } catch (err) {
-      console.error(err);
-      setCourses([]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (username === "admin" && password === "admin123") {
+      onLogin(); // ✅ login success
+    } else {
+      setError("Invalid username or password");
     }
   };
 
-  useEffect(() => { fetchCourses(); }, []);
-
   return (
-    <>
-      <CustomNavbar />
-      <Container className="my-4">
-        <Button className="mb-3" onClick={() => { setEditCourse(null); setShowForm(true); }}>Add Course</Button>
-        <Filters view={view} setView={setView} />
+    <div className="d-flex vh-100 justify-content-center align-items-center bg-light">
+      <Card className="p-4 shadow" style={{ width: "350px" }}>
+        <h4 className="mb-3 text-center">UCMS Admin Login</h4>
 
-        <Row className={view === "card" ? "g-3" : "flex-column"}>
-          {courses?.map(course => (
-            <Col key={course.id} md={view === "card" ? 4 : 12}>
-              <CourseCard
-                {...course}
-                view={view}
-                onEdit={() => { setEditCourse(course); setShowForm(true); }}
-                onDelete={fetchCourses}
-              />
-            </Col>
-          ))}
-        </Row>
-      </Container>
+        {error && <Alert variant="danger">{error}</Alert>}
 
-      <CourseForm
-        show={showForm}
-        onClose={() => setShowForm(false)}
-        course={editCourse}
-        refreshCourses={fetchCourses}
-      />
-    </>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter username"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter password"
+            />
+          </Form.Group>
+
+          <Button type="submit" variant="primary" className="w-100">
+            Login
+          </Button>
+        </Form>
+      </Card>
+    </div>
   );
 }
