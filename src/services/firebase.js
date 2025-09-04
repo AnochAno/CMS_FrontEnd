@@ -1,17 +1,19 @@
-// firebase.js
+// src/services/firebase.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBP5NknEVtmoVVnOSWPbRsRlUpx-t63cTQ",
-  authDomain: "course-management-efd48.firebaseapp.com",
-  databaseURL: "https://course-management-efd48-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "course-management-efd48",
-  storageBucket: "course-management-efd48.firebasestorage.app",
-  messagingSenderId: "65494531510",
-  appId: "1:65494531510:web:df1836d7c5bb0bced09517"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  // If using analytics, add this too:
+  // measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+// Firestore reference
 export const db = getFirestore(app);
